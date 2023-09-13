@@ -23,5 +23,15 @@ SELECT country_name FROM countries;
 SELECT street_address AS dirección, city AS ciudad, state_province AS estado FROM locations;
 
 ----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON OPERADORES ARITMETICOS
 ----------------------------------------------------------------------------------------------------------------------------
 
+-- Realizar una SELECT para visualizar el siguiente resultado. 
+-- El impuesto es el 20% del salario.
+SELECT first_name, salary AS "Bruto", (salary * 0.20) AS "Impuestos", 
+(salary - salary * 0.20) AS "Neto" FROM employees;
+
+-- Visualizar el salario anual de cada empleado, por 14 pagas. 
+-- Debemos visualizar las columnas como Nombre, Salario y Salario Anual
+SELECT CONCAT(CONCAT(first_name, ' '), last_name) AS "Nombre", salary AS "Salario",
+(salary * 14) AS "Salario Anual" FROM employees; 
