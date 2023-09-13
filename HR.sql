@@ -35,3 +35,16 @@ SELECT first_name, salary AS "Bruto", (salary * 0.20) AS "Impuestos",
 -- Debemos visualizar las columnas como Nombre, Salario y Salario Anual
 SELECT CONCAT(CONCAT(first_name, ' '), last_name) AS "Nombre", salary AS "Salario",
 (salary * 14) AS "Salario Anual" FROM employees; 
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON LITERALES
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Crear la consulta para visualizar los siguientes datos, usando el operador de
+-- concatenación ||
+SELECT 'El empleado ' || first_name || ' del departamento ' || department_id || 
+' tiene un salario de ' || salary AS "DATOS" FROM employees;
+
+-- Crear la siguiente consulta
+SELECT 'La calle ' || street_address || ' pertenece a la ciudad: ' || 
+city AS "Calle y Ciudad" FROM locations;
