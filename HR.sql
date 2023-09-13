@@ -48,3 +48,14 @@ SELECT 'El empleado ' || first_name || ' del departamento ' || department_id ||
 -- Crear la siguiente consulta
 SELECT 'La calle ' || street_address || ' pertenece a la ciudad: ' || 
 city AS "Calle y Ciudad" FROM locations;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON DISTINCT
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Visualizar las ciudades donde hay departamentos, de la tabla locations. 
+-- No deben salir repetidos
+SELECT DISTINCT city FROM locations;
+
+-- Visualizar los distintos tipos de JOB_ID por departamento de la tabla Employees
+SELECT DISTINCT department_id, job_id FROM employees;
