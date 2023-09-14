@@ -110,3 +110,16 @@ SELECT * FROM employees WHERE job_id IN ('IT_PROG', 'PU_CLERK');
 
 -- Indica las ciudades que están en Inglaterra (UK) y Japón (JP)...Tabla LOCATIONS
 SELECT city FROM locations WHERE country_id IN ('UK', 'JP');
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON LIKE
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Indicar los datos de los empleados cuyo FIRST_NAME empieza por 'J'
+SELECT * FROM employees WHERE first_name LIKE 'J%';
+
+-- Averiguar los empleados que comienzan por 'S' y terminan en 'n'
+SELECT * FROM employees WHERE first_name LIKE 'S%n';
+
+-- Indicar los países que tienen una “r” en la segunda letra (Tabla COUNTRIES)
+SELECT * FROM countries WHERE country_name LIKE '_r%';
