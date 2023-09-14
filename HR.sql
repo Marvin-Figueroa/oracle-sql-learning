@@ -123,3 +123,16 @@ SELECT * FROM employees WHERE first_name LIKE 'S%n';
 
 -- Indicar los países que tienen una “r” en la segunda letra (Tabla COUNTRIES)
 SELECT * FROM countries WHERE country_name LIKE '_r%';
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON IS NULL
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Listar las ciudades de la tabla LOCATIONS que no tienen STATE_PROVINCE
+SELECT * FROM locations WHERE state_province IS NULL;
+
+-- Averiguar el nombre, salario y comisión de aquellos empleados que tienen comisión. 
+-- También debemos visualizar una columna calculada denominada “Sueldo Total”, 
+-- que sea el sueldo más la comisión
+SELECT first_name, salary, commission_pct, salary + (salary * commission_pct) AS "Sueldo Total" 
+FROM employees WHERE commission_pct IS NOT NULL;
