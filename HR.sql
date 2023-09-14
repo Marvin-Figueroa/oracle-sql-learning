@@ -136,3 +136,27 @@ SELECT * FROM locations WHERE state_province IS NULL;
 -- que sea el sueldo más la comisión
 SELECT first_name, salary, commission_pct, salary + (salary * commission_pct) AS "Sueldo Total" 
 FROM employees WHERE commission_pct IS NOT NULL;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON AND-OR-NOT
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Obtener el nombre y la fecha de la entrada y el tipo de trabajo de los
+-- empleados que sean IT_PROG y que ganen menos de 6000 dólares
+SELECT first_name, hire_date, job_id FROM employees 
+WHERE job_id = 'IT_PROG' AND salary < 6000;
+
+-- Seleccionar los empleados que trabajen en el departamento 50 o 80,
+-- cuyo nombre comience por S y que ganen más de 3000 dólares.
+SELECT * FROM employees WHERE department_id IN (50, 80) AND first_name LIKE 'S%' AND salary > 3000;
+
+-- ¿Qué empleados de job_id IT_PROG tienen un prefijo 5 en el teléfono
+-- y entraron en la empresa en el año 2007?
+SELECT * FROM employees WHERE job_id = 'IT_PROG' AND phone_number LIKE '5%' 
+AND EXTRACT(YEAR FROM hire_date) = 2007;
+
+SELECT * FROM employees WHERE job_id = 'IT_PROG' AND phone_number LIKE '5%' 
+AND hire_date BETWEEN '01-01-07' AND '31-12-07';
+
+SELECT * FROM employees WHERE job_id = 'IT_PROG' AND phone_number LIKE '5%' 
+AND hire_date >= '01-01-07' AND hire_date <= '31-12-07';
