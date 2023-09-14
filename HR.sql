@@ -229,3 +229,23 @@ SELECT ROUND(25.67, 1) FROM DUAL;
 SELECT ROUND(25.34, 1) FROM DUAL;
 SELECT ROUND(25.34, 2) FROM DUAL;
 SELECT ROUND(25.34, -1) FROM DUAL;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON FUNCIONES DE FECHA
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Indicar el número de días que los empleados llevan en la empresa
+SELECT first_name, hire_date, TRUNC(SYSDATE - hire_date, 0) AS "DAYS SINCE HIRE" FROM employees;
+
+-- Indicar la fecha que será dentro de 15 días
+SELECT SYSDATE + 15 AS "FUTURE DATE" FROM DUAL;
+
+-- ¿Cuántos MESES faltan para la navidad? La cifra debe salir redondeada, con 1 decimal
+SELECT ROUND(MONTHS_BETWEEN('25-12-23', SYSDATE), 1) AS "MONTHS UNTIL CHRISTMASS" FROM DUAL;
+
+-- Indicar la fecha de entrada de un empleado y el último día del mes que entró
+SELECT first_name, hire_date, LAST_DAY(hire_date) FROM employees;
+
+-- Utilizando la función ROUND, indicar los empleados que entraron en los 
+-- últimos 15 días de cada mes.
+SELECT first_name, hire_date FROM employees WHERE ROUND(LAST_DAY(hire_date) - hire_date) <= 15;
