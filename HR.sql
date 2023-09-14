@@ -86,3 +86,27 @@ SELECT * FROM employees WHERE job_id = 'ST_CLERK';
 
 -- Indicar los datos de los empleados que tengan como apellidos “Smith” (LAST_NAME)
 SELECT * FROM employees WHERE last_name = 'Smith';
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON BETWEEN - IN
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Averiguar los empleados que están entre el departamento 40 y el 60
+SELECT * FROM employees WHERE department_id BETWEEN 40 AND 60;
+
+-- Visualizar los empleados que entraron entre 2002 y 2004
+SELECT * FROM employees WHERE hire_date BETWEEN '01-01-02' AND '31-12-04';
+
+-- Indica los apellidos de los empleados que empiezan desde ‘D’ hasta ‘G’
+SELECT last_name FROM employees WHERE SUBSTR(last_name, 1, 1) BETWEEN 'D' AND 'G';
+-- Solucion propuesta por el curso???
+SELECT LAST_NAME FROM EMPLOYEES WHERE LAST_NAME BETWEEN 'D' AND 'H';
+
+-- Averiguar los empleados de los departamentos 30,60 y 90. Hay que usar la cláusula IN
+SELECT * FROM employees WHERE department_id IN (30, 60, 90);
+
+-- Averiguar los empleados que tienen el tipo de trabajo IT_PROG y PU_CLERK
+SELECT * FROM employees WHERE job_id IN ('IT_PROG', 'PU_CLERK');
+
+-- Indica las ciudades que están en Inglaterra (UK) y Japón (JP)...Tabla LOCATIONS
+SELECT city FROM locations WHERE country_id IN ('UK', 'JP');
