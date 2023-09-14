@@ -159,4 +159,48 @@ SELECT * FROM employees WHERE job_id = 'IT_PROG' AND phone_number LIKE '5%'
 AND hire_date BETWEEN '01-01-07' AND '31-12-07';
 
 SELECT * FROM employees WHERE job_id = 'IT_PROG' AND phone_number LIKE '5%' 
-AND hire_date >= '01-01-07' AND hire_date <= '31-12-07';
+AND hire_date >= '01-01-07' AND hire_date <= '31-12-07'; 
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON FUNCIONES TIPO CARACTER
+----------------------------------------------------------------------------------------------------------------------------
+
+/*
+En la tabla LOCATIONS, averiguar las ciudades que son de Canada o
+Estados unidos (Country_id=CA o US) y que la longitud del nombre de la
+calle sea superior a 15.
+*/
+SELECT city, street_address, LENGTH(street_address) FROM locations 
+WHERE country_id IN ('CA', 'US') AND LENGTH(street_address) > 15;
+
+/*
+Muestra la longitud del nombre y el salario anual (por 14) para los
+empleados cuyo apellido contenga el carácter 'b' después de la 3ª
+posición.
+*/
+SELECT first_name, last_name, LENGTH(first_name), (salary * 14) AS "Annual Salary", 
+INSTR(last_name, 'b') FROM employees WHERE INSTR(last_name, 'b') > 3;
+
+/*
+Averiguar los empleados que ganan entre 4000 y 7000 euros y que
+tienen alguna 'a' en el nombre. (Debemos usar INSTR y da igual que sea
+mayúscula que minúsculas) y que tengan comisión.
+*/
+SELECT * FROM employees WHERE salary BETWEEN 4000 AND 7000 AND 
+INSTR(LOWER(first_name), 'a') != 0 AND commission_pct IS NOT NULL;
+
+-- Visualizar las iniciales de nombre y apellidos separados por puntos
+SELECT first_name, last_name, SUBSTR(first_name, 1, 1) || '.' || 
+SUBSTR(last_name, 1, 1) || '.' AS iniciales FROM employees;
+
+-- Mostrar empleados donde el nombre o apellido comienza con S.
+SELECT * FROM employees WHERE first_name LIKE 'S%' OR last_name LIKE 'S%';
+SELECT * FROM employees WHERE INSTR(first_name, 'S') = 1 OR INSTR(last_name, 'S') = 1;
+SELECT * FROM employees WHERE SUBSTR(first_name, 1, 1) = 'S' OR SUBSTR(last_name, 1, 1) = 'S';
+
+/*
+Visualizar el nombre del empleado, su salario, y con asteriscos, el número miles de dólares
+que gana. Se asocia ejemplo. (PISTA: se puede usar RPAD. Ordenado por salario
+*/
+SELECT first_name, salary, RPAD('*', FLOOR(salary / 1000), '*') AS ranking, 
+FLOOR(salary / 1000) AS "RANKING NUMBER" FROM employees ORDER BY salary DESC;
