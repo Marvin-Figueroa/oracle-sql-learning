@@ -204,3 +204,28 @@ que gana. Se asocia ejemplo. (PISTA: se puede usar RPAD. Ordenado por salario
 */
 SELECT first_name, salary, RPAD('*', FLOOR(salary / 1000), '*') AS ranking, 
 FLOOR(salary / 1000) AS "RANKING NUMBER" FROM employees ORDER BY salary DESC;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON FUNCIONES NUMERICAS
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Visualizar el nombre y salario de los empleados de los que el número de
+-- empleado es impar (PISTA: MOD)
+SELECT  employee_id, first_name, salary FROM employees WHERE MOD(employee_id , 2) != 0;
+
+-- Prueba con los siguientes valores aplicando las funciones TRUNC y ROUND, con 1 y 2 decimales.
+-- 25.67,0
+-- 25.67,1
+-- 25.34,1
+-- 25.34,2
+-- 25.67,-1
+SELECT TRUNC(25.67, 0) FROM DUAL;
+SELECT TRUNC(25.67, 1) FROM DUAL;
+SELECT TRUNC(25.34, 1) FROM DUAL;
+SELECT TRUNC(25.34, 2) FROM DUAL;
+SELECT TRUNC(25.34, -1) FROM DUAL;
+SELECT ROUND(25.67, 0) FROM DUAL;
+SELECT ROUND(25.67, 1) FROM DUAL;
+SELECT ROUND(25.34, 1) FROM DUAL;
+SELECT ROUND(25.34, 2) FROM DUAL;
+SELECT ROUND(25.34, -1) FROM DUAL;
