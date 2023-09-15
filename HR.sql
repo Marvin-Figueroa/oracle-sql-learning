@@ -281,3 +281,28 @@ moneda local (el ejemplo es con euros, suponiendo que el cambio esté en 0,79$)
 */
 SELECT first_name, salary, TO_CHAR(salary, '$99,999.99') AS "DOLARES", 
 TO_CHAR(salary * 8.75, 'L999,999.99') AS "COLONES(Deprecated)" FROM employees; 
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON CONVERSION TO_DATE Y TO_NUMBER
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Convertir las siguientes cadenas a números '1210.73' ‘$127.2’
+SELECT TO_NUMBER('1210.73') FROM DUAL;
+SELECT TO_NUMBER('$127.2', '$999.9') FROM DUAL;
+
+-- Convertir los 3 primeros caracteres del número de teléfono en números y
+-- multiplicarlos por 2.
+SELECT phone_number, (TO_NUMBER(SUBSTR(phone_number, 1,3)) * 2) AS RESULT FROM employees;
+
+/*
+Convertir las siguientes cadenas en fecha (NOTA: el mes lo debemos poner en el idioma que 
+tengamos en el SqlDeveloper. Por ejemplo, en español sería
+
+10 DE FEBRERO DE 2018
+FACTURA: MARZO0806
+*/
+SELECT TO_DATE(REPLACE('10 DE FEBRERO DE 2018', ' DE ', '-'), 'DD-MONTH-YYYY') AS RESULT FROM DUAL;
+SELECT TO_DATE('10 DE FEBRERO DE 2018', 'DD "DE" MONTH "DE" YYYY') AS RESULT FROM DUAL;
+
+SELECT TO_DATE(REPLACE('FACTURA: MARZO0806', 'FACTURA: ', ''), 'MONTHDDYY') AS RESULT FROM DUAL;
+SELECT TO_DATE('FACTURA: MARZO0806', '"FACTURA:" MONTHDDYY') AS RESULT FROM DUAL;
