@@ -306,3 +306,27 @@ SELECT TO_DATE('10 DE FEBRERO DE 2018', 'DD "DE" MONTH "DE" YYYY') AS RESULT FRO
 
 SELECT TO_DATE(REPLACE('FACTURA: MARZO0806', 'FACTURA: ', ''), 'MONTHDDYY') AS RESULT FROM DUAL;
 SELECT TO_DATE('FACTURA: MARZO0806', '"FACTURA:" MONTHDDYY') AS RESULT FROM DUAL;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON NULOS
+----------------------------------------------------------------------------------------------------------------------------
+
+/*
+De la tabla LOCATIONS visualizar el nombre de la ciudad y el estadoprovincia. 
+En el caso de que no tenga que aparezca el texto “No tiene”
+*/
+SELECT city, NVL(state_province, 'No tiene') AS STATE_PROVINCE FROM locations;
+
+/*
+Visualizar el salario de los empleados incrementado en la comisión
+(PCT_COMMISSION). Si no tiene comisión solo debe salir el salario
+*/
+SELECT first_name, commission_pct, salary,NVL2(commission_pct, salary + (salary * commission_pct), 
+salary) AS TOTAL FROM employees;
+
+-- Seleccionar el nombre del departamento y el manager_id. Si no tiene, debe salir un -1
+SELECT department_name, NVL(manager_id, -1) AS MANAGER_ID FROM departments;
+
+-- De la tabla LOCATIONS, devolver NULL si la ciudad y la provincia son
+-- iguales. Si no son iguales devolver la CITY.
+SELECT NULLIF(city, state_province) AS "NULL WHEN CITY = PROVINCE" FROM locations;
