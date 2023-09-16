@@ -330,3 +330,49 @@ SELECT department_name, NVL(manager_id, -1) AS MANAGER_ID FROM departments;
 -- De la tabla LOCATIONS, devolver NULL si la ciudad y la provincia son
 -- iguales. Si no son iguales devolver la CITY.
 SELECT NULLIF(city, state_province) AS "NULL WHEN CITY = PROVINCE" FROM locations;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON EXPRESIONES CONDICIONALES
+----------------------------------------------------------------------------------------------------------------------------
+
+/*
+Visualizar los siguientes datos con CASE.
+- Si el departamento es 50 ponemos Transporte
+- Si el departamento es 90 ponemos Dirección
+- Cualquier otro número ponemos “Otro departamento”
+*/
+SELECT 
+    first_name, 
+    department_id, 
+    CASE department_id  
+        WHEN 50 THEN 'Transporte'
+        WHEN 90 THEN 'Direccion'
+        ELSE 'Otro departamento'
+    END AS RESULT
+FROM employees;
+
+/*
+Mostrar de la tabla LOCATIONS, la ciudad y el país. Ponemos los
+siguientes datos dependiendo de COUNTRY_ID.
+- Si es US y CA ponemos América del Norte
+- Si es CH, UK, DE,IT ponemos Europa
+- Si es BR ponemos América del Sur
+- Si no es ninguno ponemos ‘Otra zona’
+*/
+SELECT 
+    city, 
+    country_id,
+    CASE 
+        WHEN country_id IN ('US', 'CA') THEN 'América del Norte'
+        WHEN country_id IN ('CH', 'UK', 'DE', 'IT') THEN 'Europa'
+        WHEN country_id IN ('BR') THEN 'América del Sur'
+        ELSE 'Otra zona'
+    END AS RESULT
+FROM locations;
+
+-- Realizar el primer ejercicio con DECODE en vez de con CASE
+SELECT 
+    first_name, 
+    department_id, 
+    DECODE(department_id, 50, 'Transporte', 90, 'Direccion', 'Otro departamento') AS RESULT   
+FROM employees;
