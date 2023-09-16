@@ -376,3 +376,46 @@ SELECT
     department_id, 
     DECODE(department_id, 50, 'Transporte', 90, 'Direccion', 'Otro departamento') AS RESULT   
 FROM employees;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON AGRUPACIONES
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Indicar el número de empleados del departamento 50
+SELECT COUNT(employee_id) AS "NUMBER OF EMPLOYEES" FROM employees 
+WHERE department_id = 50;
+
+-- Indicar el número de empleados que entraron en el año 2007 a trabajar
+SELECT COUNT(employee_id) FROM employees WHERE TO_CHAR(hire_date, 'YY') = '07';
+SELECT COUNT(employee_id) FROM employees WHERE EXTRACT(YEAR FROM hire_date) = '2007';
+
+-- Indicar la diferencia entre el sueldo más alto y al mínimo
+SELECT MAX(salary), MIN(salary), MAX(salary) - MIN(salary) AS "SALARY DIFFERENCE" FROM employees;
+
+-- Visualizar la suma del salario del departamento 100
+SELECT SUM(salary) AS "DEP 100 TOTAL SALARY" FROM employees WHERE department_id = 100;
+
+-- Mostrar el salario medio por departamento, con dos decimales
+SELECT department_id, TO_CHAR(AVG(salary), '$99,999.99') AS "AVERAGE SALARY" 
+FROM employees GROUP BY department_id;
+
+-- Mostrar el country_id y el número de ciudades que hay en ese país.
+SELECT country_id, COUNT(city) AS "NUMBER OF CITIES" FROM locations GROUP BY country_id;
+
+-- Mostrar el promedio de salario de los empleados por departamento que tengan comisión
+SELECT department_id, ROUND(AVG(salary), 2) AS "SALARIO PROMEDIO" FROM employees 
+WHERE commission_pct IS NOT NULL GROUP BY department_id;
+
+-- Mostrar los años en que ingresaron más de 10 empleados
+SELECT EXTRACT(YEAR FROM hire_date) AS AÑO, COUNT(employee_id) AS "CANTIDAD EMPLEADOS NUEVOS" 
+FROM employees GROUP BY EXTRACT(YEAR FROM hire_date) HAVING COUNT(employee_id) > 10 ORDER BY 1;
+
+-- Mostrar por departamento y año el número de empleados que ingresaron
+SELECT department_id, EXTRACT(YEAR FROM hire_date) AS AÑO, COUNT(employee_id) 
+AS "CANTIDAD EMPLEADOS NUEVOS" FROM employees GROUP BY department_id, 
+EXTRACT(YEAR FROM hire_date) ORDER BY 1;
+
+-- Mostrar los departament_id de los departamentos que tienen managers que 
+-- tienen a cargo más de 5 empleados
+SELECT department_id, manager_id, COUNT(manager_id) AS "EMPLEADOS A CARGO" 
+FROM employees GROUP BY department_id, manager_id HAVING COUNT(manager_id) > 5; 
