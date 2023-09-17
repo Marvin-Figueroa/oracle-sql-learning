@@ -419,3 +419,52 @@ EXTRACT(YEAR FROM hire_date) ORDER BY 1;
 -- tienen a cargo más de 5 empleados
 SELECT department_id, manager_id, COUNT(manager_id) AS "EMPLEADOS A CARGO" 
 FROM employees GROUP BY department_id, manager_id HAVING COUNT(manager_id) > 5; 
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON JOINS, USING Y ON
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Visualizar el nombre del país y el nombre de la región. (tablas COUNTRIES y REGIONS). 
+-- Usar un natural join.
+SELECT c.country_name, r.region_name FROM countries c JOIN regions r USING (region_id);
+
+-- Usando el ejemplo anterior visualizar también el nombre de la ciudad añadiendo una
+-- nueva tabla (LOCATIONS)
+SELECT c.country_name, r.region_name, l.city FROM countries c 
+JOIN regions r USING (region_id) JOIN locations l USING (country_id);
+
+-- Indicar el nombre del departamento y la media de sus salarios
+SELECT d.department_name, ROUND(AVG(e.salary), 2) AS "AVERAGE SALARY" 
+FROM employees e JOIN departments d USING (department_id) 
+GROUP BY d.department_name;
+
+/*
+Mostrar el nombre del departamento, el del manager a cargo y la ciudad a la que pertenece. 
+Debemos usar la cláusula ON y/o la cláusula USING para realizar la operación 
+*/
+SELECT d.department_name, e.first_name , l.city FROM employees e JOIN departments d 
+USING (department_id) JOIN locations l USING (location_id) WHERE e.employee_id = d.manager_id;
+
+/*
+Mostrar job_title, el department_name, el last_name de empleado y hire_date de todos los 
+empleados que entraron entre el 2000 y el 2004. Usar cláusulas using
+*/
+SELECT j.job_title, d.department_name, e.last_name, e.hire_date FROM employees e 
+JOIN jobs j USING(job_id) JOIN departments d USING(department_id) WHERE 
+EXTRACT(YEAR FROM hire_date) BETWEEN 2000 AND 2004;
+
+-- Mostrar el job_title y la media de los salarios de cada uno, siempre que la
+-- media supere los 7000
+SELECT j.job_title, AVG(e.salary) FROM employees e JOIN jobs j USING(job_id) 
+GROUP BY j.job_title HAVING AVG(e.salary) > 7000;
+
+-- Mostrar el nombre de la región y el número de departamentos en cada una de las regiones
+SELECT r.region_name, COUNT(d.department_id) FROM departments d JOIN locations l 
+USING(location_id) JOIN countries c USING(country_id) JOIN regions r 
+USING(region_id) GROUP BY r.region_name;
+
+-- Mostrar el nombre del empleado, el departamento y el país donde trabaja 
+-- (debemos usar la cláusual using)
+SELECT e.employee_id, e.first_name, d.department_name, c.country_name FROM employees e 
+JOIN departments d USING(department_id) JOIN locations l USING(location_id)
+JOIN countries c USING(country_id);
