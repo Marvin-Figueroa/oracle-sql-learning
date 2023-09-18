@@ -489,3 +489,38 @@ ORDER BY SUM(e.salary);
 -- no tengan departamentos
 SELECT l.city, d.department_name FROM locations l LEFT JOIN departments d
 ON l.location_id = d.location_id;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON SUBCONSULTAS
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Mostrar los compañeros que trabajan en el mismo departamento que John Chen
+SELECT first_name, last_name FROM employees WHERE department_id = 
+(SELECT department_id FROM employees WHERE first_name = 'John' AND last_name = 'Chen');
+
+-- ¿Qué departamentos tienen su sede en Toronto?
+SELECT department_name FROM departments WHERE location_id = 
+(SELECT location_id FROM locations WHERE city = 'Toronto');
+
+-- Visualizar los empleados que tengan más de 5 empleados a su cargo.
+SELECT first_name FROM employees WHERE employee_id IN (SELECT manager_id FROM employees 
+GROUP BY manager_id HAVING COUNT(employee_id) > 5);
+
+-- ¿En qué ciudad trabaja Guy Himuro?
+SELECT city FROM locations JOIN departments USING(location_id) WHERE department_id =
+(SELECT department_id FROM employees WHERE first_name = 'Guy' AND last_name = 'Himuro');
+
+-- ¿Qué empleados tienen el salario mínimo?
+SELECT last_name, job_id, salary FROM employees WHERE salary =
+(SELECT MIN(salary) FROM employees);
+
+-- Mostrar los detalles de los departamentos en los cuales el salario
+-- máximo sea mayor a 10000.
+SELECT * FROM departments WHERE department_id IN ( 
+SELECT department_id FROM employees GROUP BY department_id 
+HAVING MAX(salary) > 10000 );
+
+-- Indicar los tipos de trabajo de los empleados que entraron en la empresa
+-- entre 2002 y 2003
+SELECT * FROM jobs WHERE job_id IN (
+SELECT job_id FROM employees WHERE EXTRACT(YEAR FROM hire_date) BETWEEN 2002 AND 2003); 
