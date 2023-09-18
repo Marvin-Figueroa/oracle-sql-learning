@@ -468,3 +468,24 @@ USING(region_id) GROUP BY r.region_name;
 SELECT e.employee_id, e.first_name, d.department_name, c.country_name FROM employees e 
 JOIN departments d USING(department_id) JOIN locations l USING(location_id)
 JOIN countries c USING(country_id);
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON OTROS JOIN
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Indicar el nombre del empleado y el de su jefe (SELF_JOIN de la tabla EMPLOYEES)
+SELECT e.first_name AS empleado, j.first_name AS jefe FROM employees e 
+JOIN employees j ON e.manager_id = j.employee_id;
+
+/*
+Indica el DEPARTMENT_NAME y la suma de salarios de ese departamento ordenados ascendentemente
+y que aparezcan también los DEPARTMENT_NAME que no tengan empleados.
+*/
+SELECT d.department_name, SUM(e.salary) AS "SUMA SALARIOS" FROM departments d 
+LEFT JOIN employees e USING(department_id) GROUP BY d.department_name
+ORDER BY SUM(e.salary);
+
+-- Visualizar la ciudad y el nombre del departamento, incluidas aquellas ciudades que 
+-- no tengan departamentos
+SELECT l.city, d.department_name FROM locations l LEFT JOIN departments d
+ON l.location_id = d.location_id;
