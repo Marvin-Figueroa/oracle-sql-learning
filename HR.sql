@@ -524,3 +524,53 @@ HAVING MAX(salary) > 10000 );
 -- entre 2002 y 2003
 SELECT * FROM jobs WHERE job_id IN (
 SELECT job_id FROM employees WHERE EXTRACT(YEAR FROM hire_date) BETWEEN 2002 AND 2003); 
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON OTRAS SUBCONSULTAS
+----------------------------------------------------------------------------------------------------------------------------
+
+/*
+Seleccionar el nombre, salario y departamento de los empleados que ganen mas que cualquiera
+de los salarios máximos de los departamentos 50, 60 y 70. Usar el operador ANY
+*/
+SELECT first_name, salary, department_id FROM employees WHERE salary > ANY (SELECT MAX(salary)
+FROM employees WHERE department_id IN (50,60,70) GROUP BY department_id); 
+
+-- Indicar el nombre de los departamentos cuyo salario medio sea superior
+-- a 9000. Usar el operador IN
+SELECT department_name FROM departments WHERE department_id IN ( SELECT department_id
+FROM employees GROUP BY department_id HAVING AVG(salary) > 9000);
+
+-- Indicar el nombre del empleado, el nombre del departamento, el salario
+-- de los empleados que tengan el salario máximo de su departamento.
+-- Ordenado por salario descendentemente. Usar el operador IN
+SELECT first_name, department_name, salary FROM employees e JOIN departments d USING(department_id)
+WHERE (department_id, salary) IN ( SELECT department_id, MAX(salary) FROM employees GROUP BY department_id) 
+ORDER BY salary DESC;
+
+-- Realizar la misma consulta anterior pero usando una subconsulta sincronizada
+SELECT first_name, department_name, salary FROM employees e JOIN departments d 
+ON e.department_id = d.department_id
+WHERE salary = ( SELECT MAX(salary) FROM employees 
+WHERE department_id = e.department_id GROUP BY department_id) 
+ORDER BY salary DESC;
+
+-- Indicar los datos de los empleados que ganen más que todos los empleados del departamento 100. 
+-- Usar el operador ALL
+SELECT * FROM employees WHERE salary > ALL (SELECT salary FROM employees WHERE department_id = 100);
+
+-- Mostrar los empleados que tienen el mayor salario de su departamento. Usar subconsultas sincronizadas.
+SELECT department_id, first_name, salary FROM employees e WHERE salary = (
+SELECT MAX(salary) FROM employees WHERE department_id = e.department_id);
+
+-- Visualizar las ciudades en las que haya algún departamento. 
+-- Debemos usar consultas sincronizadas y el operador EXISTS
+SELECT city FROM locations l WHERE EXISTS (SELECT location_id FROM departments 
+WHERE location_id = l.location_id);
+
+-- Visualizar el nombre de las regiones donde no hay departamentos. Usar
+-- subconsultas sincronizadas y el operador NOT EXISTS
+SELECT region_name FROM regions r WHERE NOT EXISTS (
+    SELECT * FROM countries NATURAL JOIN locations NATURAL JOIN departments
+    WHERE region_id = r.region_id
+);
