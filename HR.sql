@@ -596,18 +596,100 @@ INSERT INTO COCHES2 VALUES(7,'FORD MUSTANG');
 COMMIT;
 
 -- Probar los 4 operadores de conjunto: UNION, UNION ALL, INTERSECT, MINUS
-SELECT * FROM COCHES1
+SELECT * FROM coches1
 UNION
-SELECT * FROM COCHES2;
+SELECT * FROM coches2;
 
-SELECT * FROM COCHES1
+SELECT * FROM coches1
 UNION ALL
-SELECT * FROM COCHES2;
+SELECT * FROM coches2;
 
-SELECT * FROM COCHES1
+SELECT * FROM coches1
 INTERSECT
-SELECT * FROM COCHES2;
+SELECT * FROM coches2;
 
-SELECT * FROM COCHES1
+SELECT * FROM coches1
 MINUS
-SELECT * FROM COCHES2;
+SELECT * FROM coches2;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON SENTENCIAS DML
+----------------------------------------------------------------------------------------------------------------------------
+
+-- CREAR LA TABLA
+CREATE TABLE PRODUCTOS
+(
+ CODIGO NUMBER NOT NULL
+, NOMBRE VARCHAR2(100) NOT NULL
+, PRECIO NUMBER NOT NULL
+, UNIDADES NUMBER
+, FECHA_ALTA DATE
+);
+
+/*
+INSERT - Insertar los siguientes datos en la tabla, indicando todas las columnas
+
+Código 1
+Nombre tornillos
+Precio 100
+Unidades 10
+Fecha_alta 01-09-2017
+*/
+INSERT INTO productos (codigo, nombre, precio, unidades, fecha_alta) 
+VALUES (1, 'Tornillos', 100, 10, '01-09-2017');
+
+/*
+Insertar los siguientes datos en la tabla, sin indicar las columnas
+
+Código 2
+Nombre Tuercas
+Precio 50
+Unidades 5
+Fecha_alta 01-10-2009
+*/
+INSERT INTO productos VALUES(2, 'Tuercas', 50, 5, '01-10-2009');
+
+
+/*
+Insertar los siguientes datos en la tabla
+
+Código 3
+Nombre Martillo
+Precio 90
+*/
+INSERT INTO productos VALUES(3, 'Martillo', 90, DEFAULT, DEFAULT);
+
+/*
+¿Este INSERT funciona?
+
+INSERT INTO PRODUCTOS (CODIGO,NOMBRE,unidades) VALUES (4,'Arandela',10);
+
+En el caso de que no funcione, solucionarlo
+*/
+-- No funciona debido a que el precio NO puede ser NULL
+INSERT INTO productos (codigo,nombre,precio,unidades) VALUES (4,'Arandela',2,10);
+
+-- Crear la siguiente tabla
+
+CREATE TABLE PRODUCTOS2
+(CODE NUMBER,
+NAME VARCHAR2(100));
+
+-- Insertar en la tabla PRODUCTOS2 las filas de la tabla PRODUCTOS que tengan más
+-- de 8 unidades. Comprobar las filas.
+INSERT INTO productos2 (SELECT codigo, nombre FROM productos WHERE unidades > 8);
+
+-- Modificar el campo NOMBRE de la tabla PRODUCTOS y poner en mayúsculas el nombre
+-- de aquellas filas que valgan más de 50. Comprobar el resultado.
+UPDATE productos SET nombre = (UPPER(nombre)) WHERE precio > 50;
+
+-- Modificar el precio de la tabla productos de aquellas filas cuyo nombre
+-- comienza por 'T'. Debemos incrementarlo en 5. Comprobar el resultado.
+UPDATE productos SET precio = precio + 5 WHERE nombre LIKE 'T%';
+
+-- Borrar las filas de la tabla productos que tengan menos de 10 unidades
+-- o un valor nulo. Comprobar el resultado.
+DELETE FROM productos WHERE unidades < 10 OR unidades IS NULL;
+
+-- Truncar la tabla PRODUCTOS2. Comprobar el resultado.
+TRUNCATE TABLE productos2;
