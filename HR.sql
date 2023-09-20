@@ -693,3 +693,54 @@ DELETE FROM productos WHERE unidades < 10 OR unidades IS NULL;
 
 -- Truncar la tabla PRODUCTOS2. Comprobar el resultado.
 TRUNCATE TABLE productos2;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON TRANSACCIONES
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Abrir otro SqlDeveloper y entrar también como el usuario HR
+
+-- Entrar en el primer SqlDeveloper
+-- Realizar un insert en la tabla productos
+INSERT INTO productos2 (code,name) VALUES (1,'CLAVOS');
+
+-- Comprobar que lo podemos ver
+-- Acceder al otro SqlDeveloper. ¿Podemos ver la fila?
+-- Volver al primer SqlDeveloper y realizar un commit
+COMMIT;
+
+-- Volvemos a acceder al otro SqlDeveloper. ¿Podemos ver ahora la fila?
+-- Regresemos al primer SqlDeveloper
+-- Hacer un DELETE de la fila
+DELETE FROM productos2 WHERE code = 1;
+
+-- Comprobar que se ha borrado
+-- Realizar un ROLLBACK
+ROLLBACK;
+
+-- Comprobar que se ha recuperado.
+SELECT * FROM productos2;
+
+-- Vamos a probar un SAVEPOINT
+
+-- Realizamos estas dos operaciones:
+INSERT INTO productos2 ( code,name ) VALUES (2,'ARANDELAS');
+INSERT INTO productos2 ( code,name ) VALUES (3,'ESCARPIAS');
+
+-- Ponemos un SAVEPOINT
+SAVEPOINT X;
+
+-- Comprobar que vemos las inserciones
+SELECT * FROM productos2;
+
+-- Hacemos ahora esta operación
+UPDATE PRODUCTOS2 SET NAME='TORNILLOS' WHERE CODE=3;
+
+-- Realizar una ROLLBACK hasta el SAVEPOINT anterior.
+ROLLBACK TO X;
+
+-- Comprobar que solo ha desaparecido el UPDATE.
+SELECT * FROM productos2;
+
+-- Hacer un COMMIT
+COMMIT;
