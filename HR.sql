@@ -798,12 +798,112 @@ INSERT INTO cursos VALUES (1,'Programacion', 'Juan');
 INSERT INTO cursos VALUES (2,'Programacion', 'Marvin');
 INSERT INTO cursos VALUES (3, 'Estructuras de datos', NULL);
 
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON MODIFICACION Y ELIMINACION DE TABLAS
+----------------------------------------------------------------------------------------------------------------------------
 
+-- Crear la siguiente tabla PAISES
+CREATE TABLE paises (
+    cod_pais NUMBER PRIMARY KEY,
+    nombre VARCHAR2(100) NOT NULL CHECK (UPPER(nombre) = nombre)
+);
 
+-- Crear la siguiente tabla CIUDADES con las siguientes características
+CREATE TABLE ciudades (
+    cod_ciudad NUMBER PRIMARY KEY,
+    nombre VARCHAR2(100) NOT NULL CHECK ((UPPER(nombre) = nombre)),
+    poblacion NUMBER NOT NULL CHECK (poblacion > 0),
+    cod_pais NUMBER REFERENCES paises(cod_pais)
+);
 
+-- Insertar una fila en PAISES, por ejemplo 28, ESTADOS UNIDOS
+INSERT INTO paises VALUES (28, 'ESTADOS UNIDOS');
 
+-- Insertar otra fila con el nombre en minúsculas, por ejemplo 29, Francia.
+-- Debe generar un error de CHEK.
+INSERT INTO paises VALUES (29, 'Francia');
 
+-- Grabar la fila correctamente.
+INSERT INTO paises VALUES (29, 'FRANCIA');
 
+-- Insertar alguna fila en la tabla CIUDADES, por ejemplo (1,NUEVA YORK,4000000,18) 
+-- Debe funcionar correctamente porque cumple todas las constraints
+INSERT INTO ciudades VALUES (1,'NUEVA YORK',4000000,28);
 
+-- Intentar insertar una fila de algún país que no exista. Por ejemplo (2,ROMA,3000000,40). 
+-- Debe generar un error ya que el país 40 no existe en la tabla PAISES
+INSERT INTO ciudades VALUES (2,'ROMA',3000000,40);
 
+-- Insertar ITALIA con el código 40 en la tabla PAISES
+INSERT INTO paises VALUES (40, 'ITALIA');
 
+-- Volver a insertar la fila con ROMA. Debería funcionar.
+INSERT INTO ciudades VALUES (2,'ROMA',3000000,40);
+
+-- Intentar grabar una ciudad con el nombre en minúsculas. Debe generar un error
+INSERT INTO ciudades VALUES (3,'Santa Ana',100000,2);
+
+-- Intentar grabar una ciudad con una población de 0. Debe generar un error
+INSERT INTO ciudades VALUES (3,'SANTA ANA',0,2);
+
+-- Insertamos varias ciudades con poblaciones entre 1.000.000 y 5.000.000
+INSERT INTO ciudades VALUES (2, 'LOS ANGELES', 3000000, 28);
+
+INSERT INTO ciudades VALUES (3, 'CHICAGO', 2500000, 28);
+
+INSERT INTO ciudades VALUES (4, 'HOUSTON', 2000000, 28);
+
+INSERT INTO ciudades VALUES (5, 'PHILADELPHIA', 1500000, 28);
+
+INSERT INTO ciudades VALUES (6, 'PHOENIX', 3500000, 28);
+
+INSERT INTO ciudades VALUES (7, 'SAN ANTONIO', 1800000, 28);
+
+INSERT INTO ciudades VALUES (8, 'SAN DIEGO', 2700000, 28);
+
+INSERT INTO ciudades VALUES (9, 'DALLAS', 2200000, 28);
+
+INSERT INTO ciudades VALUES (10, 'SAN JOSE', 1300000, 28);
+
+INSERT INTO ciudades VALUES (11, 'AUSTIN', 1900000, 28);
+
+INSERT INTO ciudades VALUES (12, 'JACKSONVILLE', 1700000, 28);
+
+INSERT INTO ciudades VALUES (13, 'INDIANAPOLIS', 2800000, 28);
+
+INSERT INTO ciudades VALUES (14, 'COLUMBUS', 2100000, 28);
+
+INSERT INTO ciudades VALUES (15, 'FORT WORTH', 1100000, 28);
+
+INSERT INTO ciudades VALUES (16, 'CHARLOTTE', 3200000, 28);
+
+INSERT INTO ciudades VALUES (17, 'SEATTLE', 3900000, 28);
+
+INSERT INTO ciudades VALUES (18, 'DENVER', 2400000, 28);
+
+INSERT INTO ciudades VALUES (19, 'EL PASO', 1700000, 28);
+
+INSERT INTO ciudades VALUES (20, 'DETROIT', 2600000, 28);
+
+INSERT INTO ciudades VALUES (21, 'MEMPHIS', 1400000, 28);
+
+-- Creamos una tabla denominada CIUDADES_PEQUE, basada en CIUDADES, 
+-- pero solo con las que tengan una población inferior a 2.000.000. 
+--Lo hacemos mediante la opción de crear una tabla basada en otra
+CREATE TABLE ciudades_peque AS SELECT * FROM ciudades WHERE poblacion < 2000000;
+
+-- Añadimos la clave primaria a CIUDADES_PEQUE sobre la columna CODIGO
+ALTER TABLE ciudades_peque ADD CONSTRAINT pk_cod_ciudad PRIMARY KEY (cod_ciudad);
+
+-- Añadimos una nueva columna a la tabla llamada BANDERA de tipo VARCHAR2(100)
+ALTER TABLE ciudades_peque ADD (bandera VARCHAR2(100));
+
+-- Añadimos alguna fila y comprobamos el resultado
+INSERT INTO ciudades_peque VALUES (30, 'RANDOM', 1900000, 28, 'Unknown');
+SELECT * FROM ciudades_peque;
+
+-- Eliminamos la columna BANDERA
+ALTER TABLE ciudades_peque DROP COLUMN bandera;
+
+-- Borramos la tabla CIUDADES_PEQUE
+DROP TABLE ciudades_peque;
