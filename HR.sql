@@ -907,3 +907,40 @@ ALTER TABLE ciudades_peque DROP COLUMN bandera;
 
 -- Borramos la tabla CIUDADES_PEQUE
 DROP TABLE ciudades_peque;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON INDICES, SECUENCIAS Y VISTAS
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Crear una vista llamada CIUDADES_GRANDES con las ciudades que tengan más de 3.000.000 de habitantes
+CREATE VIEW ciudades_grandes AS SELECT * FROM ciudades WHERE poblacion > 3000000;
+
+-- Comprobar que funciona
+SELECT * FROM ciudades_grandes;
+
+-- Crear una vista llamada CIUDADES_USA con las ciudades de Estados Unidos 
+-- (código 28 según la práctica anterior)
+CREATE VIEW ciudades_usa AS SELECT * FROM ciudades WHERE cod_pais = 28;
+
+-- Comprobar que funciona
+SELECT * FROM ciudades_usa;
+
+-- Borrar las dos vistas
+DROP VIEW ciudades_grandes;
+DROP VIEW ciudades_usa;
+
+-- Crear un índice en la tabla ciudades sobre el nombre de la ciudad
+CREATE INDEX nombre_ciudad_index ON ciudades(nombre);
+
+-- Crear una secuencia denominada SEQ1, que comience por 1 y que
+-- devuelve números de 5 en cinco.
+CREATE SEQUENCE seq1 INCREMENT BY 5 START WITH 1 CACHE 20;
+
+-- Insertar un par de países usando la secuencia como clave primaria, en
+-- vez de poner un número directamente
+INSERT INTO paises VALUES (seq1.NEXTVAL,'EL SALVADOR');
+INSERT INTO paises VALUES (seq1.NEXTVAL,'COLOMBIA');
+INSERT INTO paises VALUES (seq1.NEXTVAL,'ARGENTINA');
+
+-- Comprobar el resultado
+SELECT * FROM paises;
