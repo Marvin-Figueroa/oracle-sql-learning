@@ -744,3 +744,66 @@ SELECT * FROM productos2;
 
 -- Hacer un COMMIT
 COMMIT;
+
+----------------------------------------------------------------------------------------------------------------------------
+-- PRACTICAS CON CREACION DE TABLAS Y CONSTRAINTS PRIMARY-UNIQUE
+----------------------------------------------------------------------------------------------------------------------------
+
+-- Crear la siguiente tabla usando el comando CREATE TABLE
+CREATE TABLE students (
+    cod_matricula NUMBER,
+    nombre VARCHAR2(20),
+    apellido1 VARCHAR2(20),
+    apellido2 VARCHAR2(20),
+    edadi NUMBER,
+    fecha_matricula DATE
+);
+
+-- Comprobar con el comando DESC que existe y que tiene esa estructura
+DESC students;
+
+-- Crear una tabla denominada CENTROS, con la siguiente estructura
+CREATE TABLE centros (
+    codigo_centro NUMBER,
+    nombre VARCHAR2(100),
+    provincia VARCHAR2(100) DEFAULT 'MADRID',
+    fecha_alta DATE DEFAULT SYSDATE,
+    num_alumnos NUMBER DEFAULT 0
+);
+
+-- Insertar una fila que no tengo los tres últimos campos y comprobar que
+-- lo genera de forma automática.
+INSERT INTO centros (codigo_centro,nombre) VALUES(1,'MATEMÁTICAS');
+SELECT * FROM centros;
+
+/*
+Crear la siguiente tabla con las características indicadas
+
+* Tabla CURSOS
+
+? COD_CURSO NUMBER Y CLAVE PRIMARIA
+? NOMBRE VARCHAR2(100) NO PUEDE SER NULO Y DEBE SER ÚNICO
+? RESPONSABLE VARCHAR2(100)
+*/
+CREATE TABLE cursos (
+    cod_curso NUMBER PRIMARY KEY,
+    nombre VARCHAR2(100) NOT NULL UNIQUE,
+    responsable VARCHAR2(100)
+);
+
+-- Insertar algunas filas y comprobar que funciona la clave primaria y
+-- la clave única/not null
+INSERT INTO cursos VALUES (1, NULL, 'Juan');
+INSERT INTO cursos VALUES (1,'Programacion', 'Juan');
+INSERT INTO cursos VALUES (2,'Programacion', 'Marvin');
+INSERT INTO cursos VALUES (3, 'Estructuras de datos', NULL);
+
+
+
+
+
+
+
+
+
+
